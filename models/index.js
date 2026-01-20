@@ -1,7 +1,6 @@
 const sequelize = require('../config/database');
 const { DataTypes, Model } = require('sequelize');
 
-// User model using define (0.5 grade) - CORRECT
 const User = sequelize.define('User', {
   id: {
     type: DataTypes.INTEGER,
@@ -13,7 +12,7 @@ const User = sequelize.define('User', {
     type: DataTypes.STRING,
     unique: true,
     validate: {
-      isEmail: true  // Built-in email validation (0.5 grade)
+      isEmail: true  
     }
   },
   password: DataTypes.STRING,
@@ -28,14 +27,12 @@ const User = sequelize.define('User', {
   }
 });
 
-// Custom validation method for password (0.5 grade)
 User.prototype.checkPasswordLength = function() {
   if (this.password.length <= 6) {
     throw new Error('Password must be greater than 6 characters');
   }
 };
 
-// Post model using define with paranoid (NOT init) - FIXED
 const Post = sequelize.define('Post', {
   id: {
     type: DataTypes.INTEGER,
@@ -52,10 +49,9 @@ const Post = sequelize.define('Post', {
     }
   }
 }, {
-  paranoid: true  // Soft delete (0.5 grade)
+  paranoid: true 
 });
 
-// Comment model using define (NOT init) - FIXED
 const Comment = sequelize.define('Comment', {
   id: {
     type: DataTypes.INTEGER,
@@ -79,7 +75,6 @@ const Comment = sequelize.define('Comment', {
   }
 });
 
-// Associations
 User.hasMany(Post, { foreignKey: 'userId' });
 Post.belongsTo(User, { foreignKey: 'userId' });
 Post.hasMany(Comment, { foreignKey: 'postId' });
@@ -87,7 +82,6 @@ Comment.belongsTo(Post, { foreignKey: 'postId' });
 User.hasMany(Comment, { foreignKey: 'userId' });
 Comment.belongsTo(User, { foreignKey: 'userId' });
 
-// Export models
 module.exports = {
   User,
   Post,
